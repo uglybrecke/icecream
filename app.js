@@ -34,7 +34,7 @@ app.post('/confirm', (req, res) => {
     orders.push(order);
     console.log(orders);
     //res.send('icecream');
-    res.render(`confirm`, {orders});
+    res.render(`confirm`, {order});
 });
 
 //start the server on the designated port

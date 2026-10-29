@@ -3,9 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CONFIRM  </title>
+    <link rel="stylesheet" href="styles/confirm.css">
+    <title>Order Confirmed</title>
 </head>
 <body>
-    <h1>thank you for your order</h1>
+    <main>
+        <div id = "header-box">
+            <h1>Thank you for your order</h1>
+            <p>Your ice-cream order has been confirmed.</p>
+        </div>
+        <div id = "personal-info-box">
+            <h2>Personal Information</h2>
+            <p>Name: <%= order.name%></p>
+            <p>Email:<%= order.email%> </p>
+        </div>
+        <div id = "order-deatils-box">
+            <h2>Order Details</h2>
+            <p>Flavor: <%= order.flavor%></p>
+            <p>Cone Type: <%= order.cone%></p>
+            <p>Toppings:<%= order.topping%> </p>
+        </div>
+        <div id = "comment-box">
+            <h2>Additional Comments</h2>
+            <p>Additional Comments: <%= order.comment%> </p>
+        </div>
+
+        <div id = "button-box">
+            <button id = "print-order">Print Order</button>
+            <button id = "another-order">Place Another Order</button>
+        </div>
+    </main>
 </body>
 </html>
