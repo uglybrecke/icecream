@@ -9,6 +9,8 @@ const app = express();
 //for our server to listen on
 const PORT = 3001;
 
+const orders = [];
+
 //enable static file serving (from a folder called public)
 app.use(express.static('public'));
 
@@ -19,6 +21,20 @@ app.use(express.urlencoded({extended: true}));
 app.get('/', (req, res) => {
     //res.send('icecream');
     res.render('home');
+});
+
+//define a default route ("/")
+app.post('/confirm', (req, res) => {
+    //send this file
+    //create a json object to store order data
+    const order = req.body;
+    order['timestamp'] = new Date();
+    console.log(order);
+
+    orders.push(order);
+    console.log(orders);
+    //res.send('icecream');
+    res.render(`confirm`, {orders});
 });
 
 //start the server on the designated port
