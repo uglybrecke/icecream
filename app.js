@@ -37,6 +37,12 @@ app.post('/confirm', (req, res) => {
     res.render(`confirm`, {orders});
 });
 
+//ADMIN  route
+app.get('/admin', (req, res) => {
+    //send this file
+    res.render(`admin`, { orders } );
+})
+
 //start the server on the designated port
 app.listen(PORT, () => {
     console.log(`Server is running at
