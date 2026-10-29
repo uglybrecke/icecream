@@ -1,0 +1,41 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+
+main{
+    width: 80%;
+    margin: 2rem auto;
+    padding: 1rem 2rem 2.5rem 2rem;
+    border: 1px solid black;
+    border-radius: 1rem;
+
+    display:grid;
+    grid-template-areas: 
+    "header-box"
+    "personal-info-box"
+    "order-details-box"
+    "comment-box"
+    "button-box";
+    gap: 1rem;
+}
+
+#header-box{
+    grid-area: header-box;
+}
+
+#personal-info-box{
+    grid-area: personal-info-box;
+}
+
+#order-deatils-box{
+    grid-area: order-details-box;
+}
+
+#button-box{
+    grid-area: button-box;
+}
+
+#comment-box{
+    grid-area: comment-box;
+}
