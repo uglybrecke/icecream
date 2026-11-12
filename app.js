@@ -40,17 +40,52 @@ app.get('/', (req, res) => {
 });
 
 //define a default route ("/")
-app.post('/confirm', (req, res) => {
-    //send this file
-    //create a json object to store order data
-    const order = req.body;
-    order['timestamp'] = new Date();
-    console.log(order);
+app.post('/confirm', async(req, res) => {
 
-    orders.push(order);
-    console.log(orders);
-    //res.send('icecream');
-    res.render(`confirm`, {order});
+    try {
+        //send this file
+        //create a json object to store order data
+        const order = req.body;
+
+        //order['timestamp'] = new Date();
+
+        //conver toppings array to a comma-deliminated string
+        order.toppings = Array.isArray(order.toppings) ?
+            order.toppings.join(", ") : "";
+
+        console.log(order);
+
+        //define an SQL query to INSERT new order
+        const sql = `INSERT INTO orders (customer, email, flavor, cone, toppings, comment) VALUES(?,?,?,?,?,?)`;
+
+            //create an array of parameters froim order data
+        const params = [
+            order.customer,
+            order.email,
+            order.flavor,
+            order.conie,
+            order.toppings,
+            order.comment
+        ];
+
+        //execute the query (using array destructuring)
+        const [result] = await pool.execute(sql, params);
+
+        order.id = result.insertId;
+
+        //res.send('icecream');
+        res.render(`confirm`, {order});
+
+    } catch(err) 
+        {
+        // If ANY error happened in the 'try' block, this code runs
+        // Log the error to the server console (for developers to see)
+        console.error('Database error:', err);
+        // Send an error response to the browser
+        // status(500) means "Internal Server Error"
+        res.status(500).send('Database error: ' + err.message);
+    }
+
 });
 
 //ADMIN  route
