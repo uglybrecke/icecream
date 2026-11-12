@@ -1,6 +1,22 @@
 // Import the express module
 import express from 'express';
 
+// Import the mysql2 module
+// mysql2 allows Node.js to communicate with a MySQL database
+import mysql2 from 'mysql2';
+
+//import our dotenv file
+import dotenv from 'dotenv';
+dotenv.config();
+
+const pool = mysql2.createPool({
+    host: process.env.DB_HOST,       	// Your Digital Ocean IP
+    user: process.env.DB_USER,          // MySQL username
+    password: process.env.DB_PASSWORD, 	// MySQL password from readme.txt
+    database: process.env.DB_NAME,      // Database name
+    port: process.env.DB_PORT           // MySQL port (default is 3306)
+}).promise();
+
 //create an instance of an
 //express application
 const app = express();
@@ -47,4 +63,20 @@ app.get('/admin', (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server is running at
         http://localhost:${PORT}`);
+});
+
+// Database test - http://localhost:3000/db-test to test this route
+app.get('/db-test', async(req,res) => {
+
+    // try/catch block for error handling
+    try {
+        const [orders] = await pool.query('SELECT * FROM orders ORDER BY timestamp DESC'); //await for a database response but keep working
+
+        res.render('admin', {orders}); // 0 is the data, 1 is the metadata
+    } catch(err) {
+
+        console.error('Database error:', err);
+
+        res.status(500).send('Database error: ' + err.message);
+    }
 });
