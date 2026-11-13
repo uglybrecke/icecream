@@ -88,17 +88,32 @@ app.post('/confirm', async(req, res) => {
 
 });
 
-//ADMIN  route
-app.get('/admin', (req, res) => {
-    //send this file
-    res.render(`admin`, { orders } );
-})
-
 //start the server on the designated port
 app.listen(PORT, () => {
     console.log(`Server is running at
         http://localhost:${PORT}`);
 });
+
+//add an ADMIN route route
+app.get('/admin', async(req, res) => {
+    //send this file
+    // try/catch block for error handling
+    try {
+        const [orders] = await pool.query('SELECT * FROM orders ORDER BY timestamp DESC');
+        // Send the orders data back to the browser as JSON
+        // res.send(orders[0]);
+        res.render(`admin`, { orders } );
+    } catch(err) {
+        // If ANY error happened in the 'try' block, this code runs
+        // Log the error to the server console (for developers to see)
+        console.error('Database error:', err);
+        // Send an error response to the browser
+        // status(500) means "Internal Server Error"
+        res.status(500).send('Database error: ' + err.message);
+    }
+})
+
+
 
 // Database test - http://localhost:3000/db-test to test this route
 app.get('/db-test', async(req,res) => {
