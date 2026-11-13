@@ -63,7 +63,7 @@ app.post('/confirm', async(req, res) => {
             order.customer,
             order.email,
             order.flavor,
-            order.conie,
+            order.cone,
             order.toppings,
             order.comment
         ];
