@@ -57,6 +57,20 @@ app.get('/', (req, res) => {
     res.render('home');
 });
 
+//login page
+app.get('/login', (req, res) => {
+    const username = req.body.username;
+    const password = req.body.password;
+
+    if (username === process.env.ADMIN_USER && password === process.env.ADMIN_PASSWORD){
+        req.session.loggedIn = true;
+        res.redirect('/admin');
+    }
+    else{
+        res.render('login', {error: 'Invalid username or password'});
+    }
+});
+
 //define a default route ("/")
 app.post('/confirm', async(req, res) => {
 
@@ -113,7 +127,7 @@ app.listen(PORT, () => {
 });
 
 //add an ADMIN route route
-app.get('/admin', async(req, res) => {
+app.get('/admin', requireLogin, async(req, res) => {
     //send this file
     // try/catch block for error handling
     try {
@@ -131,7 +145,11 @@ app.get('/admin', async(req, res) => {
     }
 })
 
-
+app.get('/logout', (req, res) =>{
+    req.session.destroy(() =>{
+        res.redirect('/login');
+    })
+});
 
 // Database test - http://localhost:3000/db-test to test this route
 app.get('/db-test', async(req,res) => {
