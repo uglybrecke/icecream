@@ -57,8 +57,12 @@ app.get('/', (req, res) => {
     res.render('home');
 });
 
+app.get('/login', (req, res) =>{
+    res.render('login', {error: null});
+});
+
 //login page
-app.get('/login', (req, res) => {
+app.post('/login', (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
 
