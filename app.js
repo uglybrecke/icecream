@@ -42,6 +42,15 @@ app.use(session({
     cookie: {maxAge: 100 * 60 * 60}
 }))
 
+//require login middleware
+function requireLogin(req, res, next){
+    if (req.session.loggedIn){
+        next();
+    } else{
+        res.redirect('/login');
+    }
+}
+
 //define a default route ("/")
 app.get('/', (req, res) => {
     //res.send('icecream');
