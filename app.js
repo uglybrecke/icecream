@@ -1,6 +1,7 @@
 // Import the express module
 import express from 'express';
 
+import session from 'express-session';
 // Import the mysql2 module
 // mysql2 allows Node.js to communicate with a MySQL database
 import mysql2 from 'mysql2';
@@ -32,6 +33,14 @@ app.use(express.static('public'));
 
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({extended: true}));
+
+//session lets the serve to rmb user inbetween requests.
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {maxAge: 100 * 60 * 60}
+}))
 
 //define a default route ("/")
 app.get('/', (req, res) => {
